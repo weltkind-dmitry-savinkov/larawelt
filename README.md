@@ -9,7 +9,7 @@ CMS on Laravel 5.3
 4. Права на 0777 на папку storage и public/uploads
 5. Прописать пароли на базу в .env
 6. php artisan migrate
-7. Идем database/seeds/DatabaseSeeder.php там прописываем наш пароль
+7. Идем database/seeds/DatabaseSeeder.php там прописываем наши логин и пароль в админку
 8. php artisan db:seed
 
 Все. Админка работает.
