@@ -1,5 +1,5 @@
 # laracms
-CMS on Laravel
+CMS on Laravel 5.3
 
 Установка
 
