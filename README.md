@@ -4,12 +4,13 @@ CMS on Laravel
 Установка
 
 1. git clone
-2. composer update
-3. Права на 0777 на папку storage и public/uploads
-4. Прописать пароли на базу в .env
-5. php artisan migrate
-6. Идем database/seeds/DatabaseSeeder.php там прописываем наш пароль
-7. php artisan db:seed
+2. composer install
+3. php artisan key:generate
+4. Права на 0777 на папку storage и public/uploads
+5. Прописать пароли на базу в .env
+6. php artisan migrate
+7. Идем database/seeds/DatabaseSeeder.php там прописываем наш пароль
+8. php artisan db:seed
 
 Все. Админка работает.
 
