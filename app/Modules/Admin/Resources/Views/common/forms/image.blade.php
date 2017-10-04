@@ -5,7 +5,7 @@
             if (confirm('@lang('admin::admin.delete_image_sure')')) {
                 $.ajax({
                     url: $(this).attr('data-href'),
-                    type: 'DELETE',  // user.destroy
+                    type: 'DELETE',
                     headers: {
                         'X-CSRF-TOKEN': '{{csrf_token()}}'
                     },
@@ -15,8 +15,7 @@
                     }
                 });
                 return false;
-            }
-            else {
+            } else {
                 return false;
             }
         });
@@ -24,9 +23,14 @@
 </script>
 @endpush
 
-<div class="images-list">
+<div class="images-list" style="margin-bottom: 20px">
 
     {!! BootForm::label(trans('admin::admin.image')) !!}
+
+    @if(isset($helpBlock))
+        <p class="help-block">{!! $helpBlock !!}</p>
+    @endif
+
     <div class="clearfix"></div>
 
     @if ($entity->$field)
@@ -38,12 +42,13 @@
             <img src="{!! $entity->imagePath('mini')?:$entity->imagePath('thumb') !!}">
         @endif
 
-        <a class="btn btn-danger"
-                data-href="{!! URL::route($routePrefix.'delete-upload', ['id'=>$entity, 'field'=>$field])  !!}">
+        <a class="btn btn-danger" data-href="{!! URL::route($routePrefix.'delete-upload', ['id'=>$entity, 'field'=>$field]) !!}">
             <i class="glyphicon glyphicon-trash"></i>
         </a>
+
     </div>
     @else
-    {!! Form::file($field) !!}
+        {!! Form::file($field) !!}
     @endif
+
 </div>

@@ -24,7 +24,6 @@
             @if (isset($field['date']))
                 date: '{!! $field['date'] !!}',
             @endif
-
         });
 
         @endforeach

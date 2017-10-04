@@ -2,9 +2,7 @@
 <!-- Список ошибок формы -->
 <div class="alert alert-danger">
     <strong>@lang('admin::admin.form_error')</strong>
-
     <br><br>
-
     <ul>
         @foreach ($errors->all() as $error)
         <li>{{ $error }}</li>

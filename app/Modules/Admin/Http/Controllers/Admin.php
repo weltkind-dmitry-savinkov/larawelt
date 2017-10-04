@@ -5,10 +5,12 @@ use Illuminate\Http\Request;
 use App\Facades\Route;
 use Illuminate\Support\Facades\Request as RequestFacade;
 use Illuminate\Support\Facades\View;
-
+use App\Modules\Tree\Models\TreeRepository;
 
 abstract class Admin extends Controller
 {
+
+    protected $module;
 
     protected $viewPrefix = '';
     protected $routePrefix = '';
@@ -17,7 +19,6 @@ abstract class Admin extends Controller
         'store'=>'admin::admin.messages.store',
         'update'=>'admin::admin.messages.update',
         'destroy'=>'admin::admin.messages.destroy',
-
     ];
 
 
@@ -31,8 +32,6 @@ abstract class Admin extends Controller
 
         $this->fetchEntity();
         $this->share();
-
-
 
     }
 
@@ -114,13 +113,20 @@ abstract class Admin extends Controller
     public function edit($id)
     {
 
+        $frontUrl = null;
+
+        if ($this->module) {
+            $frontSlug = TreeRepository::getByModule($this->module)->slug;
+            $frontUrl = route($frontSlug . '.show', $id);
+        }
+
         $entity = $this->getModel()->findOrFail($id);
 
         View::share('entity', $entity);
 
         $this->after($entity);
 
-        return view($this->getFormViewName(), ['entity'=>$entity, 'routePrefix'=>$this->routePrefix]);
+        return view($this->getFormViewName(), ['entity'=>$entity, 'routePrefix'=>$this->routePrefix, 'frontUrl' => $frontUrl]);
 
     }
 

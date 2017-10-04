@@ -2,6 +2,7 @@
 
 @section('form_js')
 @include('admin::common.forms.datepicker', ['fields'=>[['id'=>'date', 'date'=>date('Y-m-d')]]])
+@include('admin::common.forms.datepicker', ['fields'=>[['id'=>'deactivation_date', 'date'=>date('Y-m-d')]]])
 @include('admin::common.forms.ckeditor', ['fields'=>[['id'=>'content']]])
 @endsection
 

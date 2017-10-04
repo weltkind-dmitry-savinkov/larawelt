@@ -36,25 +36,25 @@ $.AdminLTE.options = {
   //Add slimscroll to navbar menus
   //This requires you to load the slimscroll plugin
   //in every page before app.js
-  navbarMenuSlimscroll: true,
+  navbarMenuSlimscroll: false,
   navbarMenuSlimscrollWidth: "3px", //The width of the scroll bar
   navbarMenuHeight: "200px", //The height of the inner menu
   //General animation speed for JS animated elements such as box collapse/expand and
   //sidebar treeview slide up/down. This options accepts an integer as milliseconds,
   //'fast', 'normal', or 'slow'
-  animationSpeed: 500,
+  animationSpeed: 400,
   //Sidebar push menu toggle button selector
   sidebarToggleSelector: "[data-toggle='offcanvas']",
   //Activate sidebar push menu
-  sidebarPushMenu: true,
+  sidebarPushMenu: false,
   //Activate sidebar slimscroll if the fixed layout is set (requires SlimScroll Plugin)
-  sidebarSlimScroll: true,
+  sidebarSlimScroll: false,
   //Enable sidebar expand on hover effect for sidebar mini
   //This option is forced to true if both the fixed layout and sidebar mini
   //are used together
   sidebarExpandOnHover: false,
   //BoxRefresh Plugin
-  enableBoxRefresh: true,
+  enableBoxRefresh: false,
   //Bootstrap.js tooltip
   enableBSToppltip: true,
   BSTooltipSelector: "[data-toggle='tooltip']",
@@ -64,7 +64,7 @@ $.AdminLTE.options = {
   //before AdminLTE's app.js
   enableFastclick: false,
   //Control Sidebar Options
-  enableControlSidebar: true,
+  enableControlSidebar: false,
   controlSidebarOptions: {
     //Which button should trigger the open/close event
     toggleBtnSelector: "[data-toggle='control-sidebar']",
@@ -301,82 +301,6 @@ function _init() {
     }
   };
 
-  /* PushMenu()
-   * ==========
-   * Adds the push menu functionality to the sidebar.
-   *
-   * @type Function
-   * @usage: $.AdminLTE.pushMenu("[data-toggle='offcanvas']")
-   */
-  $.AdminLTE.pushMenu = {
-    activate: function (toggleBtn) {
-      //Get the screen sizes
-      var screenSizes = $.AdminLTE.options.screenSizes;
-
-      //Enable sidebar toggle
-      $(document).on('click', toggleBtn, function (e) {
-        e.preventDefault();
-
-        //Enable sidebar push menu
-        if ($(window).width() > (screenSizes.sm - 1)) {
-          if ($("body").hasClass('sidebar-collapse')) {
-            $("body").removeClass('sidebar-collapse').trigger('expanded.pushMenu');
-          } else {
-            $("body").addClass('sidebar-collapse').trigger('collapsed.pushMenu');
-          }
-        }
-        //Handle sidebar push menu for small screens
-        else {
-          if ($("body").hasClass('sidebar-open')) {
-            $("body").removeClass('sidebar-open').removeClass('sidebar-collapse').trigger('collapsed.pushMenu');
-          } else {
-            $("body").addClass('sidebar-open').trigger('expanded.pushMenu');
-          }
-        }
-      });
-
-      $(".content-wrapper").click(function () {
-        //Enable hide menu when clicking on the content-wrapper on small screens
-        if ($(window).width() <= (screenSizes.sm - 1) && $("body").hasClass("sidebar-open")) {
-          $("body").removeClass('sidebar-open');
-        }
-      });
-
-      //Enable expand on hover for sidebar mini
-      if ($.AdminLTE.options.sidebarExpandOnHover
-        || ($('body').hasClass('fixed')
-        && $('body').hasClass('sidebar-mini'))) {
-        this.expandOnHover();
-      }
-    },
-    expandOnHover: function () {
-      var _this = this;
-      var screenWidth = $.AdminLTE.options.screenSizes.sm - 1;
-      //Expand sidebar on hover
-      $('.main-sidebar').hover(function () {
-        if ($('body').hasClass('sidebar-mini')
-          && $("body").hasClass('sidebar-collapse')
-          && $(window).width() > screenWidth) {
-          _this.expand();
-        }
-      }, function () {
-        if ($('body').hasClass('sidebar-mini')
-          && $('body').hasClass('sidebar-expanded-on-hover')
-          && $(window).width() > screenWidth) {
-          _this.collapse();
-        }
-      });
-    },
-    expand: function () {
-      $("body").removeClass('sidebar-collapse').addClass('sidebar-expanded-on-hover');
-    },
-    collapse: function () {
-      if ($('body').hasClass('sidebar-expanded-on-hover')) {
-        $('body').removeClass('sidebar-expanded-on-hover').addClass('sidebar-collapse');
-      }
-    }
-  };
-
   /* Tree()
    * ======
    * Converts the sidebar into a multilevel
@@ -388,48 +312,18 @@ function _init() {
   $.AdminLTE.tree = function (menu) {
     var _this = this;
     var animationSpeed = $.AdminLTE.options.animationSpeed;
-    $(document).off('click', menu + ' li a')
-      .on('click', menu + ' li a', function (e) {
-        //Get the clicked link and the next element
-        var $this = $(this);
-        var checkElement = $this.next();
-
-        //Check if the next element is a menu and is visible
-        if ((checkElement.is('.treeview-menu')) && (checkElement.is(':visible')) && (!$('body').hasClass('sidebar-collapse'))) {
-          //Close the menu
-          checkElement.slideUp(animationSpeed, function () {
-            checkElement.removeClass('menu-open');
-            //Fix the layout in case the sidebar stretches over the height of the window
-            //_this.layout.fix();
-          });
-          checkElement.parent("li").removeClass("active");
-        }
-        //If the menu is not visible
-        else if ((checkElement.is('.treeview-menu')) && (!checkElement.is(':visible'))) {
-          //Get the parent menu
-          var parent = $this.parents('ul').first();
-          //Close all open menus within the parent
-          var ul = parent.find('ul:visible').slideUp(animationSpeed);
-          //Remove the menu-open class from the parent
-          ul.removeClass('menu-open');
-          //Get the parent li
-          var parent_li = $this.parent("li");
-
-          //Open the target menu and add the menu-open class
-          checkElement.slideDown(animationSpeed, function () {
-            //Add the class active to the parent li
-            checkElement.addClass('menu-open');
-            parent.find('li.active').removeClass('active');
-            parent_li.addClass('active');
-            //Fix the layout in case the sidebar stretches over the height of the window
-            _this.layout.fix();
-          });
-        }
-        //if this isn't a link, prevent the page from being redirected
-        if (checkElement.is('.treeview-menu')) {
-          e.preventDefault();
-        }
-      });
+    $(document).off('click', menu + ' .treeview-group').on('click', menu + ' .treeview-group', function (e) {
+        var parentBlock = $(this).closest('.treeview');
+        parentBlock.find('.treeview-menu').slideToggle(animationSpeed);
+        parentBlock.toggleClass('active');
+        parentBlock.find('.treeview-menu').toggleClass('is-active');
+    });
+    $(document).on('click', '.hamburger', function() {
+        $('.main-sidebar').addClass('is-opened');
+    });
+    $(document).on('click', '.main-sidebar__close', function() {
+        $('.main-sidebar').removeClass('is-opened');
+    });
   };
 
   /* ControlSidebar

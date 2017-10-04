@@ -18,7 +18,7 @@
 
             </div>
 
-            <div class="col-md-1 filters-button">
+            <div class="col-md-3">
                 {!! BootForm::submit(trans('admin::admin.select')) !!}
             </div>
 

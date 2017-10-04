@@ -1,8 +1,8 @@
 @extends('admin::layouts.app')
 @section('title')
-<h2>@lang('admin::admin.main_page')</h2>
+<h2>LaraWelt</h2>
 @endsection
 
 @section('content')
-    <p>@lang('admin::admin.main_text')</p>
+    @include('admin::common.manual')
 @endsection

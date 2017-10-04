@@ -1,7 +1,5 @@
 @push('js')
 @if ($id)
-    <script src="/adminlte/plugins/jQueryUi/jquery-ui.min.js"></script>
-
     <script>
 
         $(document).ready(function () {

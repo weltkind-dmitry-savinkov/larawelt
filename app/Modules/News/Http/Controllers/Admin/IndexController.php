@@ -6,11 +6,11 @@ use App\Modules\Admin\Http\Controllers\Admin;
 use App\Modules\Admin\Http\Controllers\Image;
 use App\Modules\News\Models\News;
 
-
 class IndexController extends Admin
 {
-
     use Image;
+
+    protected $module = 'news';
 
     public function getModel(){
         return new News();
@@ -18,12 +18,6 @@ class IndexController extends Admin
 
     public function getRules($request, $id = false)
     {
-        return  ['title' => 'sometimes|required|max:255'];
-
+        return ['title' => 'sometimes|required|max:255'];
     }
-
-
-
-
-
 }

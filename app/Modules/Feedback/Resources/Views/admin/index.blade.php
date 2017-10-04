@@ -25,7 +25,7 @@
                 {!! BootForm::text('settings[zoom]', trans('feedback::index.zoom'),  Settings::get('zoom')) !!}
             </div>
 
-            <div class="col-md-1 filters-button">
+            <div class="col-md-3">
                 {!! BootForm::submit(trans('admin::admin.save')) !!}
             </div>
 
@@ -33,7 +33,6 @@
     </div>
     {!! BootForm::close() !!}
 @endsection
-
 
 @section('th')
     <th>@sortablelink('date', trans('admin::fields.date'))</th>
@@ -49,7 +48,7 @@
             <td>{{ $entity->email }}</td>
             <td>{{ $entity->name }}</td>
             <td class="controls">
-                @include('admin::common.controls.edit', ['routePrefix'=>$routePrefix, 'id'=>$entity->id])
+                @include('admin::common.controls.look', ['routePrefix'=>$routePrefix, 'id'=>$entity->id])
                 @include('admin::common.controls.destroy', ['routePrefix'=>$routePrefix, 'id'=>$entity->id])
             </td>
         </tr>
